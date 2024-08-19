@@ -28,10 +28,12 @@ let foo (h, m) =
   let hh =
     if m > 30 then h+1
     else h in
-  let mm 
-  *)
+  let m' =
+    if m > 30 then 30-m
+    else m in
+*)
 
-
+  (*
 let fmt model =
   let hrs = model.hours in
   let min = model.mins in
@@ -39,7 +41,11 @@ let fmt model =
   let pst = model.past in
   format_of_string 
   [%string "" ]
+  *)
 
+
+
+  (*
 (* https://github.com/janestreet/ppx_string *)
 let fmt = format_of_string "
 ITLISASAMPM
@@ -53,6 +59,8 @@ PASTERUNINE
 %s%s
 %sSE%s
 "
+*)
+
 
 (*
 mins.(QUARTER)
@@ -79,11 +87,21 @@ hours.(0)
 let model_to_str m =
 *)
 
+let initial_model = {
+  hours = Array.of_list
+    [false; false; true; false; false;
+     false; false; false; false; false;
+     false; false; false];
+  mins = Array.of_list [false; false; true; false; false];
+  leds = Array.of_list [true; true; true; false];
+  past = true;
+}
 
-let initial_model: t = {
+
+let initial_model' = {
   hours = Array.make 13 false;
   mins = Array.make 5 false;
-  secs = Array.make 4 false;
+  leds = Array.make 4 false;
   past = false
 } 
 
@@ -117,9 +135,13 @@ let bold fmt = Spices.(default |> bold true |> build) fmt
 let bold' fmt = Spices.(default |> bold true)
 
 let view model = 
-    bold "%s" [%string "%{a}" ]
+    build_outstr model
+    (* bold "%s" [%string "%{a}" ] *)
 
 
 
 let app = Minttea.app ~init ~update ~view ()
 let () = Minttea.start app ~initial_model
+(*
+let () = Minttea.start app ~initial_model
+*)

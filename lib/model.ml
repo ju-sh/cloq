@@ -1,9 +1,19 @@
 
 type t = {
-  hours: bool array;
-  mins: bool array;
-  secs: bool array;
+  hours: bool array; (* 0-12 *)
+  mins: bool array;  (* 0-4 *)
+  leds: bool array;  (* 0-3 *)
   past: bool;
+}
+
+let egmdl = {
+  hours = Array.of_list
+    [false; false; true; false; false;
+     false; false; false; false; false;
+     false; false];
+  mins = Array.of_list [false; false; true; false];
+  leds = Array.of_list [true; true; true; false];
+  past = true;
 }
 
 
@@ -53,59 +63,65 @@ let hour_de = function
   | TWELVE -> 12
   *)
 
+let unlit str =
+  let style fmt = Spices.(default |> fg (color "#808080") |> build) fmt in
+  style "%s" str
+
+let lit str =
+  let style fmt = Spices.(default |> bold true |> build) fmt in
+  style "%s" str
+
 let build_outstr model =
-  let lit fmt = Spices.(default |> bold true |> build) fmt in
   let lines = [
-    (lit "%s" "IT") ^ "L" ^ (lit "%s" "IS") ^ "ASAMPM";
-    "AC" ^ 
-      (if model.mins.(2) then (lit "%s" "QUARTER")
-       else "QUARTER") ^ "DC";
+    (lit "IT") ^ (unlit "L") ^ (lit "IS") ^ (unlit "ASAMPM");
+    (unlit "AC") ^ 
+      (if model.mins.(2) then (lit "QUARTER")
+       else (unlit "QUARTER")) ^ (unlit "DC");
+    (if model.mins.(3) then (lit "TWENTY")
+     else (unlit "TWENTY")) ^
+    (if model.mins.(0) then (lit "FIVE")
+     else (unlit "FIVE"));
 
-    (if model.mins.(3) then (lit "%s" "TWENTY")
-     else "TWENTY") ^
-    (if model.mins.(0) then (lit "%s" "FIVE")
-     else "FIVE");
+    (if model.mins.(4) then (lit "HALF")
+     else (unlit "HALF")) ^ (unlit "S") ^
+    (if model.mins.(1) then (lit "TEN")
+     else (unlit "TEN")) ^ (unlit "F") ^
+    (if model.past then (lit "TO")
+     else (unlit "TO"));
 
-    (if model.mins.(4) then (lit "%s" "HALF")
-     else "HALF") ^ "S" ^
-    (if model.mins.(1) then (lit "%s" "TEN")
-     else "TEN") ^ "F" ^
-    (if model.past then (lit "%s" "TO")
-     else "TO");
+    (if not model.past then (lit "PAST")
+     else (unlit "PAST")) ^ (unlit "ERU") ^
+    (if model.hours.(9) then (lit "NINE")
+     else (unlit "NINE"));
 
-    (if not model.past then (lit "%s" "PAST")
-     else "PAST") ^ "ERU" ^
-    (if model.hours.(9) then (lit "%s" "NINE")
-     else "NINE");
+    (if model.hours.(1) then (lit "ONE")
+     else (unlit "ONE")) ^
+    (if model.hours.(6) then (lit "SIX")
+     else (unlit "SIX")) ^
+    (if model.hours.(3) then (lit "THREE")
+     else (unlit "THREE"));
 
-    (if model.hours.(1) then (lit "%s" "ONE")
-     else "ONE") ^
-    (if model.hours.(6) then (lit "%s" "SIX")
-     else "SIX") ^
-    (if model.hours.(3) then (lit "%s" "THREE")
-     else "THREE");
+    (if model.hours.(4) then (lit "FOUR")
+     else (unlit "FOUR")) ^
+    (if model.hours.(5) then (lit "FIVE")
+     else (unlit "FIVE")) ^
+    (if model.hours.(2) then (lit "TWO")
+     else (unlit "TWO"));
 
-    (if model.hours.(4) then (lit "%s" "FOUR")
-     else "FOUR") ^
-    (if model.hours.(5) then (lit "%s" "FIVE")
-     else "FIVE") ^
-    (if model.hours.(2) then (lit "%s" "TWO")
-     else "TWO");
+    (if model.hours.(8) then (lit "EIGHT")
+     else (unlit "EIGHT")) ^
+    (if model.hours.(11) then (lit "ELEVEN")
+     else (unlit "ELEVEN"));
 
-    (if model.hours.(8) then (lit "%s" "EIGHT")
-     else "EIGHT") ^
-    (if model.hours.(11) then (lit "%s" "ELEVEN")
-     else "ELEVEN");
+    (if model.hours.(7) then (lit "SEVEN")
+     else (unlit "SEVEN")) ^
+    (if model.hours.(12) then (lit "TWELVE")
+     else (unlit "TWELVE"));
 
-    (if model.hours.(7) then (lit "%s" "SEVEN")
-     else "SEVEN") ^
-    (if model.hours.(12) then (lit "%s" "TWELVE")
-     else "TWELVE");
-
-    (if model.hours.(10) then (lit "%s" "TEN")
-     else "TEN") ^ "SE" ^
-    (if model.hours.(0) then (lit "%s" "OCLOCK")
-     else "OCLOCK")] in
+    (if model.hours.(10) then (lit "TEN")
+     else (unlit "TEN")) ^ (unlit "SE") ^
+    (if model.hours.(0) then (lit "OCLOCK")
+     else (unlit "OCLOCK"))] in
   String.concat "\n" lines
 
 
