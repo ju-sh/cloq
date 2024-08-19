@@ -84,26 +84,19 @@ hours.(0)
 let model_to_str m =
 *)
 
+
 (*
-let initial_model = {
-  hours = Array.of_list
-    [false; false; true; false; false;
-     false; false; false; false; false;
-     false; false; false];
-  mins = Array.of_list [false; false; true; false; false];
-  leds = Array.of_list [true; true; true; false];
-  past = true;
-}
-*)
-
-
 let initial_model = {
   hours = Array.make 13 false;
   mins = Array.make 5 false;
   leds = Array.make 4 false;
   past = false
 } 
+*)
 
+let initial_model = time_to_model (gethm ())
+
+(* Time is in microseconds ?? *)
 let init _model = Command.Set_timer (ref, 1.0)
 
 let update event model =

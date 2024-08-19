@@ -8,21 +8,27 @@ type t = {
 
 let time_to_model (h, m) =
   let pst = m > 30 in
+  let h' = h mod 12 in
+  let hidx_aux =
+    if pst then [h'+1]
+    else [h'] in
+  let hidxs =
+    if m = 0 then 0::hidx_aux
+    else hidx_aux in
   let m' = 
-    if pst then m-30
+    if pst then 30-(m mod 30)
     else m in
-  let lds = m' mod 5 in
-  let mm = m'/5 - 1 in
+  let mrem = m' mod 5 in
+  let mbig = m' - mrem in
+  let mm = mbig/5 - 1 in
   let midxs =
     if mm < 4 then [mm]
     else if mm = 4 then [0; 3] (* 5 and 20 *)
     else [4] in
-  let hidx =
-    if pst then h+1
-    else h in
-  let harr = Array.init 13 ((=) hidx) in
+  let harr = Array.init 13 (Fun.flip List.mem hidxs) in
   let marr = Array.init 5 (Fun.flip List.mem midxs) in
-  let larr = Array.append (Array.make lds true) (Array.make (4-lds) true) in
+  let larr = Array.append (Array.make mrem true) (Array.make (4-mrem) false) in
+  (* let larr = Array.append (Array.make (mrem+1) true) (Array.make (4-(mrem+1)) true) in *)
   {
     hours = harr;
     mins = marr;
@@ -93,7 +99,7 @@ let build_outstr model =
     (if model.mins.(3) then (lit "TWENTY")
      else (unlit "TWENTY")) ^
     (if model.mins.(0) then (lit "FIVE")
-     else (unlit "FIVE"));
+     else (unlit "FIVE")) ^ (unlit "X");
 
     (if model.mins.(4) then (lit "HALF")
      else (unlit "HALF")) ^ (unlit "S") ^
@@ -134,8 +140,15 @@ let build_outstr model =
     (if model.hours.(10) then (lit "TEN")
      else (unlit "TEN")) ^ (unlit "SE") ^
     (if model.hours.(0) then (lit "OCLOCK")
-     else (unlit "OCLOCK"))] in
+     else (unlit "OCLOCK"));
+
+    let body = Array.fold_right
+      (fun b str -> (if b then "● " else "○ ") ^ str)
+      model.leds "" in
+    "  " ^ body ^ " "
+  ] in
   String.concat "\n" lines
+  (* ●● ○ *)
 
 
 (*
