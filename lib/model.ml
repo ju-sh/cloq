@@ -6,25 +6,31 @@ type t = {
   past: bool;
 }
 
-let time_to_model (h, m) =
-  let pst = m > 30 in
+let time_to_model_params (h, m) =
+  let mrem = m mod 5 in
+  let pst = m <= 30 in
   let h' = h mod 12 in
   let hidx_aux =
-    if pst then [h'+1]
-    else [h'] in
+    if pst then [h']
+    else [h'+1] in
   let hidxs =
-    if m = 0 then 0::hidx_aux
+    if m < 5 then 12::hidx_aux
     else hidx_aux in
   let m' = 
-    if pst then 30-(m mod 30)
-    else m in
-  let mrem = m' mod 5 in
-  let mbig = m' - mrem in
-  let mm = mbig/5 - 1 in
-  let midxs =
+    if pst then m-mrem
+    else 30-((m-mrem) mod 30) in
+  (* let mrem = m' mod 5 in *)
+  (* let mbig = m' - mrem in *)
+  (* let mm = mbig/5 - 1 in *)
+  let mm = m'/5 - 1 in
+ let midxs =
     if mm < 4 then [mm]
     else if mm = 4 then [0; 3] (* 5 and 20 *)
     else [4] in
+ (hidxs, midxs, mrem, pst)
+
+let time_to_model (h, m) =
+  let (hidxs, midxs, mrem, pst) = time_to_model_params (h, m) in
   let harr = Array.init 13 (Fun.flip List.mem hidxs) in
   let marr = Array.init 5 (Fun.flip List.mem midxs) in
   let larr = Array.append (Array.make mrem true) (Array.make (4-mrem) false) in
@@ -104,10 +110,10 @@ let build_outstr model =
      else (unlit "HALF")) ^ (unlit "S") ^
     (if model.mins.(1) then (lit "TEN")
      else (unlit "TEN")) ^ (unlit "F") ^
-    (if model.past then (lit "TO")
+    (if not model.past then (lit "TO")
      else (unlit "TO"));
 
-    (if not model.past then (lit "PAST")
+    (if model.past then (lit "PAST")
      else (unlit "PAST")) ^ (unlit "ERU") ^
     (if model.hours.(9) then (lit "NINE")
      else (unlit "NINE"));
@@ -133,12 +139,12 @@ let build_outstr model =
 
     (if model.hours.(7) then (lit "SEVEN")
      else (unlit "SEVEN")) ^
-    (if model.hours.(12) then (lit "TWELVE")
+    (if model.hours.(0) then (lit "TWELVE")
      else (unlit "TWELVE"));
 
     (if model.hours.(10) then (lit "TEN")
      else (unlit "TEN")) ^ (unlit "SE") ^
-    (if model.hours.(0) then (lit "OCLOCK")
+    (if model.hours.(12) then (lit "OCLOCK")
      else (unlit "OCLOCK"));
 
     let body = Array.fold_right
@@ -149,6 +155,35 @@ let build_outstr model =
   String.concat "\n" lines
 
 (*
+ 0: twelve
+ 1: one
+ 2: two
+ 3: three
+ 4: four
+ 5: five
+ 6: six
+ 7: seven
+ 8: eight
+ 9: nine
+10: ten
+11: eleven
+12: oclock
+---
+0: five
+1: ten
+2: quarter
+3: twenty
+4: half
+---
+0: past
+1: to
+---
+leds: n:Int
+
+
+-----
+
+
  0: oclock
  1: one
  2: two
@@ -177,9 +212,6 @@ leds: n:Int
 
 
 (*
-fun genoutstr =
-    Spices.
-
 
 {|
 ITLISASAMPM

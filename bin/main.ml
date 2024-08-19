@@ -133,10 +133,5 @@ let view model =
     build_outstr model
     (* bold "%s" [%string "%{a}" ] *)
 
-
-
 let app = Minttea.app ~init ~update ~view ()
 let () = Minttea.start app ~initial_model
-(*
-let () = Minttea.start app ~initial_model
-*)
