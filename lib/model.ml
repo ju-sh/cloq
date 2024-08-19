@@ -7,15 +7,53 @@ type t = {
 }
 
 let egmdl = {
-  hours = Array.of_list
-    [false; false; true; false; false;
+  hours =
+    [|false; false; true; false; false;
      false; false; false; false; false;
-     false; false];
-  mins = Array.of_list [false; false; true; false];
-  leds = Array.of_list [true; true; true; false];
+     false; false|];
+  mins = [|false; false; true; false|];
+  leds = [|true; true; true; false|];
   past = true;
 }
 
+let time_to_model (h, m) =
+  let pst = m > 30 in
+  let m' = 
+    if pst then m-30
+    else m in
+  let lds = m' mod 5 in
+  let mm = m'/5 - 1 in
+  let midxs =
+    if mm < 4 then [mm]
+    else if mm = 4 then [0; 3] (* 5 and 20 *)
+    else [4] in
+  let hidx =
+    if pst then h+1
+    else h in
+  let harr = Array.init 13 ((=) hidx) in
+  let marr = Array.init 5 (Fun.flip List.mem midxs) in
+  let larr = Array.append (Array.make lds true) (Array.make (4-lds) true) in
+  {
+    hours = harr;
+    mins = marr;
+    leds = larr;
+    past = pst;
+  }
+
+
+
+(*
+let time_to_model (h, m) =
+  let hh =
+    let h' =
+      if m > 30 then h+1
+      else h in
+    arr = Array.make 13 false in
+    let _ = arr.(h') <- true in
+  let m' =
+    if m > 30 then 30-m
+    else m in
+*)
 
 (*
 type min_t =
