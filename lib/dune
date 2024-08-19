@@ -1,2 +1,5 @@
 (library
- (name clock))
+ (name clock)
+ (libraries minttea spices)
+ (preprocess
+  (pps ppx_string)))
