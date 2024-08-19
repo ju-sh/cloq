@@ -15,23 +15,20 @@ let gethm () =
   let hour = now.tm_hour in
   let minute = now.tm_min in
   (hour, minute)
-
-let bold_style = Spices.(default |> bold true)
 (*
 let hour = now.Unix.tm_hour
 let minute = now.Unix.tm_min
 *)
 
-
+(* https://github.com/leostera/minttea/blob/b084ec7401c52167fae5087577133e52e3874899/examples/views/main.ml#L54 *)
+let ref = Riot.Ref.make ()
 (*
-let foo (h, m) =
-  let hh =
-    if m > 30 then h+1
-    else h in
-  let m' =
-    if m > 30 then 30-m
-    else m in
-*)
+let init _model =
+  (* let st = time_to_model (gethm ()) in *)
+  Command.Noop
+  (* Command.Seq [ Set_timer (ref, 1.0); Enter_alt_screen ] *)
+  *)
+
 
   (*
 let fmt model =
@@ -87,6 +84,7 @@ hours.(0)
 let model_to_str m =
 *)
 
+(*
 let initial_model = {
   hours = Array.of_list
     [false; false; true; false; false;
@@ -96,21 +94,25 @@ let initial_model = {
   leds = Array.of_list [true; true; true; false];
   past = true;
 }
+*)
 
 
-let initial_model' = {
+let initial_model = {
   hours = Array.make 13 false;
   mins = Array.make 5 false;
   leds = Array.make 4 false;
   past = false
 } 
 
-let init _model = Command.Noop
+let init _model = Command.Set_timer (ref, 1.0)
 
 let update event model =
   match event with
   (* Exit on pressing 'Q' *)
   | Event.KeyDown (Key "Q" | Escape) -> (model, Command.Quit)
+  | Event.Timer _ref ->
+      let nmodel = time_to_model (gethm ()) in
+      (nmodel, Command.Set_timer (ref, 1.0))
   (*
   (* Claim victory *)
   | Event.KeyDown (Key "c") -> (model, Command.Quit)

@@ -1,19 +1,9 @@
 
 type t = {
-  hours: bool array; (* 0-12 *)
-  mins: bool array;  (* 0-4 *)
-  leds: bool array;  (* 0-3 *)
+  hours: bool array; (* size: 13 *)
+  mins: bool array;  (* size: 5 *)
+  leds: bool array;  (* size: 4 *)
   past: bool;
-}
-
-let egmdl = {
-  hours =
-    [|false; false; true; false; false;
-     false; false; false; false; false;
-     false; false|];
-  mins = [|false; false; true; false|];
-  leds = [|true; true; true; false|];
-  past = true;
 }
 
 let time_to_model (h, m) =
@@ -39,21 +29,6 @@ let time_to_model (h, m) =
     leds = larr;
     past = pst;
   }
-
-
-
-(*
-let time_to_model (h, m) =
-  let hh =
-    let h' =
-      if m > 30 then h+1
-      else h in
-    arr = Array.make 13 false in
-    let _ = arr.(h') <- true in
-  let m' =
-    if m > 30 then 30-m
-    else m in
-*)
 
 (*
 type min_t =
