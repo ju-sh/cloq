@@ -8,6 +8,7 @@ type t = {
 
 let time_to_model_params (h, m) =
   let mrem = m mod 5 in
+  let mbig = m - mrem in
   let pst = m <= 30 in
   let h' = h mod 12 in
   let hidx_aux =
@@ -17,11 +18,8 @@ let time_to_model_params (h, m) =
     if m < 5 then 12::hidx_aux
     else hidx_aux in
   let m' = 
-    if pst then m-mrem
-    else 30-((m-mrem) mod 30) in
-  (* let mrem = m' mod 5 in *)
-  (* let mbig = m' - mrem in *)
-  (* let mm = mbig/5 - 1 in *)
+    if pst then mbig
+    else 30-(mbig mod 30) in
   let mm = m'/5 - 1 in
  let midxs =
     if mm < 4 then [mm]
