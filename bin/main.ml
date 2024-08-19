@@ -73,6 +73,68 @@ let hour_de = function
   | ELEVEN -> 11
   | TWELVE -> 12
 
+(*
+let foo (h, m) =
+  let hh =
+    if m > 30 then h+1
+    else h in
+  let mm 
+  *)
+
+let build_outstr model =
+  let lit fmt = Spices.(default |> bold true |> build) fmt in
+  let line1 = (lit "%s" "IT") ^ "L" ^ (lit "%s" "IS") ^ "ASAMPM" in
+  let line2 = "AC" ^ 
+    (if model.mins.(2) then (lit "%s" "QUARTER")
+     else "QUARTER") ^ "DC" in
+  let line3 =
+    (if model.mins.(3) then (lit "%s" "TWENTY")
+     else "TWENTY") ^
+    (if model.mins.(0) then (lit "%s" "FIVE")
+     else "FIVE") in
+  let line4 =
+    (if model.mins.(4) then (lit "%s" "HALF")
+     else "HALF") ^ "S" ^
+    (if model.mins.(1) then (lit "%s" "TEN")
+     else "TEN") ^ "F" ^
+    (if model.past then (lit "%s" "TO")
+     else "TO") in
+  let line5 =
+    (if not model.past then (lit "%s" "PAST")
+     else "PAST") ^ "ERU" ^
+    (if model.hours.(9) then (lit "%s" "NINE")
+     else "NINE") in
+  let line6 =
+    (if model.hours.(1) then (lit "%s" "ONE")
+     else "ONE") ^
+    (if model.hours.(6) then (lit "%s" "SIX")
+     else "SIX") ^
+    (if model.hours.(3) then (lit "%s" "THREE")
+     else "THREE") in
+  let line7 =
+    (if model.hours.(4) then (lit "%s" "FOUR")
+     else "FOUR") ^
+    (if model.hours.(5) then (lit "%s" "FIVE")
+     else "FIVE") ^
+    (if model.hours.(2) then (lit "%s" "TWO")
+     else "TWO") in
+  let line8 =
+    (if model.hours.(8) then (lit "%s" "EIGHT")
+     else "EIGHT") ^
+    (if model.hours.(11) then (lit "%s" "ELEVEN")
+     else "ELEVEN") in
+  let line9 =
+    (if model.hours.(7) then (lit "%s" "SEVEN")
+     else "SEVEN") ^
+    (if model.hours.(12) then (lit "%s" "TWELVE")
+     else "TWELVE") in
+  let line10 =
+    (if model.hours.(10) then (lit "%s" "TEN")
+     else "TEN") ^ "SE" ^
+    (if model.hours.(0) then (lit "%s" "OCLOCK")
+     else "OCLOCK") in
+  line2
+
 
 let fmt model =
   let hrs = model.hours in
@@ -154,8 +216,12 @@ let update event model =
 
 let a = "asdf"
 
+let red fmt = Spices.(default |> fg (color "#992222") |> build) fmt
+let bold fmt = Spices.(default |> bold true |> build) fmt
+let bold' fmt = Spices.(default |> bold true)
+
 let view model = 
-    [%string "%{a}" ]
+    bold "%s" [%string "%{a}" ]
 
 
 
