@@ -1,0 +1,10 @@
+(executable
+ (public_name clock)
+ (name main)
+ (libraries minttea spices clock)
+ (flags (:standard -warn-error -A))
+; (flags
+;   (:standard -warn-error "-unused-value-declaration"))
+;   (:standard -warn-error "-unused-var-strict"))
+ (preprocess
+  (pps ppx_string)))
