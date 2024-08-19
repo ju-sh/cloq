@@ -28,7 +28,6 @@ let time_to_model (h, m) =
   let harr = Array.init 13 (Fun.flip List.mem hidxs) in
   let marr = Array.init 5 (Fun.flip List.mem midxs) in
   let larr = Array.append (Array.make mrem true) (Array.make (4-mrem) false) in
-  (* let larr = Array.append (Array.make (mrem+1) true) (Array.make (4-(mrem+1)) true) in *)
   {
     hours = harr;
     mins = marr;
@@ -97,9 +96,9 @@ let build_outstr model =
       (if model.mins.(2) then (lit "QUARTER")
        else (unlit "QUARTER")) ^ (unlit "DC");
     (if model.mins.(3) then (lit "TWENTY")
-     else (unlit "TWENTY")) ^
+     else (unlit "TWENTY")) ^ (unlit "X") ^
     (if model.mins.(0) then (lit "FIVE")
-     else (unlit "FIVE")) ^ (unlit "X");
+     else (unlit "FIVE"));
 
     (if model.mins.(4) then (lit "HALF")
      else (unlit "HALF")) ^ (unlit "S") ^
@@ -148,8 +147,6 @@ let build_outstr model =
     "  " ^ body ^ " "
   ] in
   String.concat "\n" lines
-  (* ●● ○ *)
-
 
 (*
  0: oclock
