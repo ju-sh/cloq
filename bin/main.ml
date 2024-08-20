@@ -1,5 +1,4 @@
 open Minttea
-open Spices
 open Clock.Model
 
 (*

@@ -7,13 +7,13 @@ type t = {
 }
 
 (* TODO: past/to not needed when oclock *)
-(* TODO: change right after half *)
+(* TODO: change half past at 35 *)
 let time_to_model_params (h, m) =
   let mrem = m mod 5 in
   let mbig = m - mrem in
   let pst =
     if m = 0 then None
-    else if m < 30 then Some true
+    else if m < 35 then Some true
     else Some false in
   let h' = h mod 12 in
   let hidx_aux =
