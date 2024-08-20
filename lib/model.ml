@@ -1,9 +1,8 @@
-
 type t = {
   hours: bool array; (* size: 13 *)
   mins: bool array;  (* size: 5 *)
   leds: bool array;  (* size: 4 *)
-  past: bool option;
+  past: bool option  (* PAST or TO or neither *)
 }
 
 (* TODO: past/to not needed when oclock *)
@@ -12,7 +11,7 @@ let time_to_model_params (h, m) =
   let mrem = m mod 5 in
   let mbig = m - mrem in
   let pst =
-    if m = 0 then None
+    if m < 5 then None  (* Neither past nor to *)
     else if m < 35 then Some true
     else Some false in
   let h' = h mod 12 in

@@ -71,22 +71,10 @@ let update event model =
   match event with
   (* Exit on pressing 'Q' *)
   | Event.KeyDown (Key "Q" | Escape) -> (model, Command.Quit)
+  (* | Event.KeyDown (Key "i") -> (model, Command.Noop) *)
   | Event.Timer _ref ->
       let nmodel = time_to_model (gethm ()) in
       (nmodel, Command.Set_timer (ref, 1.0))
-  (*
-  (* Claim victory *)
-  | Event.KeyDown (Key "c") -> (model, Command.Quit)
-  | Event.KeyDown (Key numstr) -> 
-      (match int_of_string_opt numstr with
-      (* Ignore other events *)
-      | None -> (model, Command.Noop)
-      | Some col ->
-          if col > 0 && col <= 7 then
-            (fill_spot model (col-1), Command.Noop)
-          else 
-            (model, Command.Noop))
-  *)
   (* Ignore other events *)
   | _ -> (model, Command.Noop)
 
