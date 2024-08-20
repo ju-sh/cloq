@@ -3,23 +3,28 @@ type t = {
   hours: bool array; (* size: 13 *)
   mins: bool array;  (* size: 5 *)
   leds: bool array;  (* size: 4 *)
-  past: bool;
+  past: bool option;
 }
 
+(* TODO: past/to not needed when oclock *)
+(* TODO: change right after half *)
 let time_to_model_params (h, m) =
   let mrem = m mod 5 in
   let mbig = m - mrem in
-  let pst = m <= 30 in
+  let pst =
+    if m = 0 then None
+    else if m < 30 then Some true
+    else Some false in
   let h' = h mod 12 in
   let hidx_aux =
-    if pst then [h']
-    else [h'+1] in
+    if pst = Some false then [h'+1]
+    else [h'] in
   let hidxs =
     if m < 5 then 12::hidx_aux
     else hidx_aux in
   let m' = 
-    if pst then mbig
-    else 30-(mbig mod 30) in
+    if pst = Some false then 30-(mbig mod 30)
+    else mbig in
   let mm = m'/5 - 1 in
  let midxs =
     if mm < 4 then [mm]
@@ -108,10 +113,10 @@ let build_outstr model =
      else (unlit "HALF")) ^ (unlit "S") ^
     (if model.mins.(1) then (lit "TEN")
      else (unlit "TEN")) ^ (unlit "F") ^
-    (if not model.past then (lit "TO")
+    (if model.past = Some false then (lit "TO")
      else (unlit "TO"));
 
-    (if model.past then (lit "PAST")
+    (if model.past = Some true then (lit "PAST")
      else (unlit "PAST")) ^ (unlit "ERU") ^
     (if model.hours.(9) then (lit "NINE")
      else (unlit "NINE"));
