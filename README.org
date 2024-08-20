@@ -1,3 +1,4 @@
+Made as an attempt to get familiar with minttea.
 
 #+begin_src 
 *IT*​L​*IS*​ASAMPM

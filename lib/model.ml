@@ -150,7 +150,10 @@ let build_outstr model =
      else (unlit "OCLOCK"));
 
     let body = Array.fold_right
-      (fun b str -> (if b then "● " else "○ ") ^ str)
+      (fun b str ->
+        (if b then (lit "●")
+         else (unlit "○")) ^
+        " " ^ str)
       model.leds "" in
     "  " ^ body ^ " "
   ] in
