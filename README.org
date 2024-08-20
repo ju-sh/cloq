@@ -1,4 +1,13 @@
-Made as an attempt to get familiar with minttea.
+Replicating a [[https://qlocktwo.com/][clock's]] design with slight changes.
+
+Made as an attempt to get familiar with ocaml's minttea package.
+
+#+begin_src bash
+dune build
+dune exec clock
+#+end_src 
+
+-----
 
 #+begin_src 
 *IT*​L​*IS*​ASAMPM

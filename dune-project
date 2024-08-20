@@ -5,13 +5,13 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github ju-sh/cloq))
 
-(authors "Author Name")
+(authors "Julin S")
 
-(maintainers "Maintainer Name")
+(maintainers "Julin S")
 
-(license LICENSE)
+(license MIT)
 
 (documentation https://url/to/documentation)
 
@@ -25,4 +25,4 @@
     ppx_string
     ocaml dune)
  (tags
-  (topics "to describe" your project)))
+  (time clock text tui)))
