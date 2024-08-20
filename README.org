@@ -4,7 +4,7 @@ Made as an attempt to get familiar with ocaml's minttea package.
 
 #+begin_src bash
 dune build
-dune exec clock
+dune exec cloq
 #+end_src 
 
 -----

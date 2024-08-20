@@ -1,7 +1,7 @@
 (executable
- (public_name clock)
+ (public_name cloq)
  (name main)
- (libraries minttea spices clock)
+ (libraries minttea spices cloq)
  (flags (:standard -warn-error -A))
 ; (flags
 ;   (:standard -warn-error "-unused-value-declaration"))

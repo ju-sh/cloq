@@ -1,6 +1,6 @@
 (lang dune 3.11)
 
-(name clock)
+(name cloq)
 
 (generate_opam_files true)
 
@@ -16,7 +16,7 @@
 (documentation https://url/to/documentation)
 
 (package
- (name clock)
+ (name cloq)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends
@@ -25,4 +25,4 @@
     ppx_string
     ocaml dune)
  (tags
-  (time clock text tui)))
+  (time cloq text tui)))

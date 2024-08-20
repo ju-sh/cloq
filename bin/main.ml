@@ -1,5 +1,5 @@
 open Minttea
-open Clock.Model
+open Cloq.Model
 
 (*
 https://github.com/leostera/minttea/blob/main/spices/spices.ml
