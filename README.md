@@ -10,11 +10,14 @@ Made as an attempt to get familiar with ocaml's
 
 ## Screenshots
 
+<img src="screenshots/0528-m.png" title="Time is 05:28 AM" height="300"> <img src="screenshots/1100-m.png" title="Time is 11:00 AM" height="300"> <img src="screenshots/1247-m.png" title="Time is 12:47 PM" height="300"> <img src="screenshots/2030-m.png" title="Time is 08:30 PM" height="300">
+
+
 ## Figuring out the time from the clock
 Read the currently 'lit up' words to find a time.
 
 Each of the four circles at the bottom represent a minute.
-A filled white circle means we should add one minute to the time we figured out from the message displaye.
+A filled white circle means we should add one minute to the time we figured out from the message displayed.
 
 Number of seconds is not indicated.
 
@@ -51,32 +54,3 @@ dune exec cloq
 ```
 
 Press Q to exit.
-
------
-
-*IT*​L​*IS*​ASAMPM
-ACQUARTERDC
-TWENTYFIVEX
-HALFS​*TEN*​F​*TO*
-PASTERUNINE
-ONESIXTHREE
-FOURFIVETWO
-EIGHTELEVEN
-*SEVEN*​TWELVE
-TENSEOCLOCK
-
-
-
-
-
-
-*IT*​L​*IS*​ASAMPM\\
-ACQUARTERDC\\
-TWENTYFIVEX\\
-HALFS​*TEN*​F​*TO*\\
-PASTERUNINE\\
-ONESIXTHREE\\
-FOURFIVETWO\\
-EIGHTELEVEN\\
-*SEVEN*​TWELVE\\
-TENSEOCLOCK
